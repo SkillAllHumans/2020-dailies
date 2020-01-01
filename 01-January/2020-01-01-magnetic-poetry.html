@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Magnetic Poetry</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+      padding: 10%;
+    }
+    html, body {
+      box-sizing: border-box;
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+    
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a5a5a5+0,707070+100 */
+      background: #a5a5a5; /* Old browsers */
+      background: -moz-linear-gradient(top,  #a5a5a5 0%, #707070 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top,  #a5a5a5 0%,#707070 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom,  #a5a5a5 0%,#707070 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a5a5a5', endColorstr='#707070',GradientType=0 ); /* IE6-9 */
+      left: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      text-align: center;
+      z-index: -100;
+    }
+    .word-tile {
+      background: #fff;
+      border: 1px solid #aaa;
+      border-bottom: 2px solid #aaa;
+      border-right: 2px solid #aaa;
+      cursor: pointer;
+      display: inline-block;
+      font-family: "Courier New", "Lucida Console", monospace;
+      line-height: 250%;
+      margin: 2px 1px;
+      padding: 2px 1px;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+    <span class="word-tile">We</span>
+    <span class="word-tile">will</span>
+    <span class="word-tile">not</span>
+    <span class="word-tile">go</span>
+    <span class="word-tile">quietly</span>
+    <span class="word-tile">into</span>
+    <span class="word-tile">the</span>
+    <span class="word-tile">night</span>
+    <span class="word-tile">We</span>
+    <span class="word-tile">will</span>
+    <span class="word-tile">not</span>
+    <span class="word-tile">vanish</span>
+    <span class="word-tile">without</span>
+    <span class="word-tile">a</span>
+    <span class="word-tile">fight</span>
+    <span class="word-tile">We're</span>
+    <span class="word-tile">going</span>
+    <span class="word-tile">to</span>
+    <span class="word-tile">live</span>
+    <span class="word-tile">on</span>
+    <span class="word-tile">We're</span>
+    <span class="word-tile">going</span>
+    <span class="word-tile">to</span>
+    <span class="word-tile">survive</span>
+    <span class="word-tile">Today</span>
+    <span class="word-tile">we</span>
+    <span class="word-tile">celebrate</span>
+    <span class="word-tile">our</span>
+    <span class="word-tile">Independence</span>
+    <span class="word-tile">Day</span>
+
+  <script>
+    //act on page load
+    $(document).ready(function() {
+
+      $('.word-tile').draggable({
+          revert: "invalid",
+          stack: ".word-tile"
+      });
+      $(".word-tile, body, html").droppable({
+          revert: "invalid",
+          stack: ".word-tile"
+      });
+    });
+
+  </script>
+</body>
+</html>
