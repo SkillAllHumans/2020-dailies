@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fireworks</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+      padding: 10%;
+    }
+    html, body {
+      box-sizing: border-box;
+      cursor: crosshair;
+
+      /* Permalink http://colorzilla.com/gradient-editor/#000000+0,1e1e1e+62,4c4c4c+100 */
+        background: #000000; /* Old browsers */
+        background: -moz-linear-gradient(top,  #000000 0%, #1e1e1e 62%, #4c4c4c 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #000000 0%,#1e1e1e 62%,#4c4c4c 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #000000 0%,#1e1e1e 62%,#4c4c4c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#4c4c4c',GradientType=0 ); /* IE6-9 */
+      
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+    
+      overflow: hidden;
+      z-index: -100;
+    }
+    .firework{
+      color: red;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+    $(document).ready(function(){
+      //html entity codes from https://dev.w3.org/html5/html-author/charref
+      let fChars = ["O", "o", "X", "x", "0", "&#9674;", "&#8224;", "&there4;", "&conint;", "&Cconint;",
+        "&#8225;", "&#164;", "&#167;", "&num;", "&order;", "&compfn;", "&becaus;", "&Colon;", "&twixt;", "&Conint;",
+        "&oplus;", "&ominus;", "&otimes;", "&osol;", "&odot;", "&ocir;", "&oast;", "&odash;", "&plusb;", "&timesb;"];
+
+      let fFonts = ["sans-serif","serif","monospace","cursive","fantasy"];
+
+      function randomNumber(min, max){
+        //from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function makeFirework(position){
+        let x1 = position.pageX;
+        let y1 = position.pageY;
+        let font_color = "rgb(" + randomNumber(0, 255) + "," + randomNumber(0, 255) + "," + randomNumber(0, 255) + ")";
+        let rchar = fChars[randomNumber(0, fChars.length)];
+        let rfont = fFonts[randomNumber(0, fFonts.length)];
+
+        //from https://stackoverflow.com/a/3717297
+        $("<span class='firework'></span>")
+          .html(rchar)
+          .appendTo(document.body)
+          .css({
+            "color": font_color,
+            "font": rfont,
+            "fontSize": randomNumber(10, 100) + "px",
+            "left": (x1-10)+"px",
+            "top": (y1-15)+"px"
+          });
+        fireworkAppear();
+      } //end makeFirework
+      
+      function fireworkAppear(){
+        $(".firework").animate({
+          fontSize: "15em",
+          opacity: 0.0,
+          top: top+"500px",
+          width: "100%"
+        }, 1500);        
+        fireworkDisappear();
+      } //end fireworkAppear
+      
+      function fireworkDisappear(){
+        setTimeout(function(){
+          $(".firework").remove(); 
+        }, 60000);
+      } //end fireworkDisappear
+      
+    //Event listeners
+      $("body").on("click", makeFirework);
+
+    });
+  </script>
+</body>
+</html>
