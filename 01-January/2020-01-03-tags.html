@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tags</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <style>
+    html { /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      min-width: 100%;
+      padding: 2%;
+    }
+    html, body {
+      background-color: #ccc;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 100%;
+      
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+    
+      z-index: -100;
+    }
+
+    #tag-container{
+      margin: 0 auto;
+      padding: 3%;
+    }
+    .tag{
+      border-radius: 3px;
+      color: #f4e8e0;
+      cursor: pointer;
+      background-color: #66C88F;
+      float: left;
+      font-size: 2em;
+      font-variant: small-caps;
+      margin: 4px;
+      padding: 4px;
+    }
+    .tag:nth-child(6n + 1){
+      clear: left;
+    }
+    .selected {
+      background-color: #478c64;
+      font-weight: bold;
+    }
+
+    .hide {
+      display: none;
+      visibility: hidden;
+    }
+    .show {
+      display: inline-block;
+      /*float: left;*/
+      padding: 1%;
+    }
+
+    #image-container{
+      clear: both;
+      margin: 2%;
+      min-height: 50%;
+      padding: 1%;
+    }
+
+    /*classes for grouping*/
+      /*https://www.color-hex.com/color-palette/19340*/
+    #females{
+      background-color: #ea6459;
+    }
+    #males{
+      background-color: #ee7600;
+    }
+    #planex{
+      background-color: #478c64;
+    }
+    #robots{
+      background-color: #a8becf;
+    }
+    #humans{
+      background-color: #614cb5;
+    }
+    #mutants{
+      background-color: #a15fa9;
+    }
+    #robot-mafia{
+      background-color: #62633e;
+    }
+    #aliens{
+      background-color: #56a63e;
+    }
+    #cops{
+      background-color: #4980b1;
+    }
+    #scientists{
+      background-color: #ffb6c1;
+    }
+
+    /*https://www.w3schools.com/howto/howto_css_zoom_hover.asp*/
+    img:hover{
+      transform: scale(1.5);
+    }
+  </style>
+</head>
+<body>
+
+  <p>Images taken from <a href="https://www.vox.com/2015/7/17/8989959/futurama-voices-actors">this Vox article</a>.</p>
+
+  <div id="tag-container">
+    <span class="tag selected" id="all">all</span>
+    <span class="tag" id="females">females</span>
+    <span class="tag" id="males">males</span>
+    <span class="tag" id="planex">planex</span>
+    <span class="tag" id="robots">robots</span>
+    <span class="tag" id="humans">humans</span>
+    <span class="tag" id="mutants">mutants</span>
+    <span class="tag" id="robot-mafia">robot-mafia</span>
+    <span class="tag" id="aliens">aliens</span>
+    <span class="tag" id="cops">cops</span>
+    <span class="tag" id="scientists">scientists</span>
+  </div>
+
+  <div id="image-container">
+
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-01.png" class="all show males aliens" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-02.png" class="all show females humans scientists" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-03.png" class="all show females mutants" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-04.png" class="all show males robots robot-mafia" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-05.png" class="all show males robots robot-mafia" />
+
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-06.png" class="all show males robots robot-mafia" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-07.png" class="all show males robots" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-08.png" class="all show males aliens" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-09.png" class="all show males robots" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-10.png" class="all show males aliens" />
+
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-11.png" class="all show males aliens" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-12.png" class="all show males robots" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-13.png" class="all show males planex humans" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-14.png" class="all show males mutants" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-15.png" class="all show males planex humans cops" />
+
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-16.png" class="all show males planex humans scientists" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-17.png" class="all show males planex aliens" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-18.png" class="all show males humans" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-19.png" class="all show males aliens scientists" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-20.png" class="all show males planex robots robot-mafia" />
+
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-21.png" class="all show males robots robot-mafia" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-22.png" class="all show males planex humans" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-23.png" class="all show females planex humans" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-24.png" class="all show females planex mutants" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-25.png" class="all show females aliens" />
+
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-26.png" class="all show females humans" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-27.png" class="all show males humans cops" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-28.png" class="all show males robots cops" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-29.png" class="all show males aliens scientists" />
+    <img src="..\images\2020-01-03-tags\2020-01-03-tags-30.png" class="all show females humans scientists" />
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+      //functions
+      function showOnlyChosen(className){
+        $("img").not("."+className).addClass("hide");
+        $("img").not("."+className).removeClass("show");
+        $("."+className).removeClass("hide");
+        $("."+className).addClass("show");
+        $(".tag").removeClass("selected");
+        $("#"+className).addClass("selected");
+        let tempColor = $("#"+className).css("backgroundColor");
+        $("#image-container").css("backgroundColor", tempColor);
+        //$("img"+ className + ":nth-child(10n + 1)").css( "clear", "left" );
+      } //end showOnlyChosen
+            
+    //Event listeners
+      $("#all").on('click', function () {
+        showOnlyChosen("all")
+      });
+      $("#females").on('click', function () {
+        showOnlyChosen("females")
+      });
+      $("#males").on('click', function () {
+        showOnlyChosen("males")
+      });
+      $("#humans").on('click', function () {
+        showOnlyChosen("humans")
+      });
+      $("#robots").on('click', function () {
+        showOnlyChosen("robots")
+      });
+      $("#aliens").on('click', function () {
+        showOnlyChosen("aliens")
+      });
+      $("#planex").on('click', function () {
+        showOnlyChosen("planex")
+      });
+      $("#mutants").on('click', function () {
+        showOnlyChosen("mutants")
+      });
+      $("#robot-mafia").on('click', function () {
+        showOnlyChosen("robot-mafia")
+      });
+      $("#cops").on('click', function () {
+        showOnlyChosen("cops")
+      });
+      $("#scientists").on('click', function () {
+        showOnlyChosen("scientists")
+      });
+    });
+  </script>
+</body>
+</html>
