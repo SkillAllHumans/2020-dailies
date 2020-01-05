@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mr. Turnip Man</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <!-- http://touchpunch.furf.com, for drag'n'drop to work in mobile -->
+  <script src="../js/jquery.ui.touch-punch.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+    }
+    html, body {
+      box-sizing: border-box;
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+    
+      background: url(../images/2020-01-05-turnip-man/2020-01-05-turnip-man-body.png) top left no-repeat;
+
+      left: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      text-align: center;
+      z-index: -100;
+    }
+    #props{
+	  background-color: rgba(111,111,111,0.15);
+	  border: 1px dotted #ccc;
+      display: inline-block;
+	  float: right;
+	  max-width: 60%;
+      min-height: 100%;
+	  padding: 10px;
+      right: 0;
+      top: 0;
+    }
+    .accessory{
+      cursor: pointer;
+      display: inline-block;
+      float: right;
+    }
+    .accessory:nth-child(2n + 1){
+      clear: right;
+    }
+
+    @media all and (max-width: 600px){
+      #props{
+		background-color: transparent;
+		border: none;
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="props">
+
+    <!-- http://clipart-library.com/clipart/BcaE55Gxi.htm -->
+    <img class="accessory" src="../images/2020-01-05-turnip-man/2020-01-05-turnip-man-glasses.png" alt="glasses" />
+
+    <!-- http://clipart-library.com/clipart/pi58yXyBT.htm -->
+    <img class="accessory" src="../images/2020-01-05-turnip-man/2020-01-05-turnip-man-bowtie.png" alt="bowtie" />
+
+    <!-- http://clipart-library.com/clipart/pToArMy7c.htm -->
+    <img class="accessory" src="../images/2020-01-05-turnip-man/2020-01-05-turnip-man-sneakers-blue.png" alt="sneakers-blue" />
+
+    <!-- http://clipart-library.com/clipart/dT48xMR8c.htm -->
+    <img class="accessory" src="../images/2020-01-05-turnip-man/2020-01-05-turnip-man-sneakers-pink.png" alt="sneakers-pink" />
+
+    <!-- http://clipart-library.com/clipart/qcBAMnBRi.htm -->
+    <img class="accessory" src="../images/2020-01-05-turnip-man/2020-01-05-turnip-man-party-hat.png" alt="party-hat" />
+
+    <!-- http://clipart-library.com/clipart/8iGbebE8T.htm -->
+    <img class="accessory" src="../images/2020-01-05-turnip-man/2020-01-05-turnip-man-grad-hat.png" alt="grad-hat" />
+    
+  </div>
+
+
+  <script>
+    //act on page load
+    $(document).ready(function() {
+
+      $('.accessory').draggable({
+          revert: "invalid",
+          stack: ".accessory"
+      });
+      $(".accessory, body, html").droppable({
+          revert: "invalid",
+          stack: ".accessory"
+      });
+    });
+
+  </script>
+</body>
+</html>
