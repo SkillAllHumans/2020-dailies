@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mabel Sweater</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <!-- http://touchpunch.furf.com, for drag'n'drop to work in mobile -->
+  <script src="../js/jquery.ui.touch-punch.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      box-sizing: border-box;
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+      
+      /*modified from http://www.clipartbay.com/clipart/13556*/
+      background: url(../images/2020-01-06-mabel-sweater/2020-01-06-sweater-bg4.png) no-repeat top center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-color: #aa00ff;
+
+      left: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      text-align: center;
+      z-index: -100;
+    }
+    #left, #right{
+      display: inline-block;
+      min-height: 100%;
+    }
+    #left{
+      float: left;
+      min-height: 60%;
+    }
+    #right{
+      float: right;
+    }
+    .color{
+      border: 1px solid rgba(10,10,10,.25);
+      cursor: pointer;
+      display: inline-block;
+      float: right;
+      height: 5vh;
+      margin: 2px;
+      padding: 2px;
+      width: 8vw;
+    }
+    .color:nth-child(4n + 1){
+      clear: right;
+    }
+    @media all and (max-width: 600px){
+      html, body{
+        background: url(../images/2020-01-06-mabel-sweater/2020-01-06-sweater-bg5.png) no-repeat top center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-color: #aa00ff;
+      }
+      #left{
+        min-height: 80%;
+      }
+      #right{
+        clear: both;
+        min-width: 99%;
+      }    
+      .color:nth-child(4n + 1){
+        clear: none;
+      }
+    }
+    @media all and (max-width: 500px){
+      #left{
+        min-height: 66%;
+      }
+      .color:nth-child(5n + 1){
+        clear: both;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="left">&nbsp;</div>
+  <div id="right">
+    <div id="colors">
+      <!-- colors from https://htmlcolor-codes.com/metro-ui-colors -->
+      <span class="color" style="background-color: #A4C400">&nbsp;</span>
+      <span class="color" style="background-color: #60A917">&nbsp;</span>
+      <span class="color" style="background-color: #008A00">&nbsp;</span>
+      <span class="color" style="background-color: #00ABA9">&nbsp;</span>
+      <span class="color" style="background-color: #1BA1E2">&nbsp;</span>
+      <span class="color" style="background-color: #0050EF">&nbsp;</span>
+      <span class="color" style="background-color: #6A00FF">&nbsp;</span>
+      <span class="color" style="background-color: #AA00FF">&nbsp;</span>
+      <span class="color" style="background-color: #F472D0">&nbsp;</span>
+      <span class="color" style="background-color: #D80073">&nbsp;</span>
+      <span class="color" style="background-color: #A20025">&nbsp;</span>
+      <span class="color" style="background-color: #E51400">&nbsp;</span>
+      <span class="color" style="background-color: #FA6800">&nbsp;</span>
+      <span class="color" style="background-color: #F0A30A">&nbsp;</span>
+      <span class="color" style="background-color: #E3C800">&nbsp;</span>
+      <span class="color" style="background-color: #825A2C">&nbsp;</span>
+      <span class="color" style="background-color: #6D8764">&nbsp;</span>
+      <span class="color" style="background-color: #647687">&nbsp;</span>
+      <span class="color" style="background-color: #76608A">&nbsp;</span>
+      <span class="color" style="background-color: #A0522D">&nbsp;</span>
+    </div>
+    <div id="pix">
+      <select name="choice">
+        <option value="p1">Cat</option> 
+        <option value="p2">Puppy</option>
+        <option value="p3" selected="">Fox</option>
+        <option value="p4">Pig</option> 
+        <option value="p5">Book</option>
+        <option value="p6">Crab</option>
+        <option value="p7">Pineapple</option>
+        <option value="p8">Scissors</option>
+        <option value="p9">Cupcake</option>
+        <option value="p10">Tooth</option>
+      </select>
+    </div>
+  </div>
+
+  <script>
+    //act on page load
+    $(document).ready(function() {
+
+    //functions
+      function changeBGColor(colorSpan){
+        //surround selected
+        $(".color").css("border", "1px solid rgba(10,10,10,.25)");
+        $(colorSpan).css("border", "1px solid rgba(10,10,10,1)");
+        //change body bg to match
+        let tempColor = $(colorSpan).css("backgroundColor");
+        $("body, html").css("backgroundColor", tempColor);
+      } //end changeBGColor
+
+      function designSelect(choice){
+        $("#left").prepend("<img id='design' style='width: 16vw; height: 16vh; z-index: 1000;' src='../images/2020-01-06-mabel-sweater/"+choice+".png' />");
+        $(function() {
+            $("#design").draggable({
+              revert: "invalid"
+            });
+         });
+      } //end designSelect
+
+    //load initial selection
+      designSelect("p3");
+
+    //Event listeners
+      $('select').on('change', function() {
+        $("#design").remove();
+        designSelect(this.value);
+      });
+
+      $(".color").on('click', function () {
+        changeBGColor(this);
+      });
+      
+      $("body, html").droppable({
+          revert: "invalid"
+      });
+
+    });// end $(document).ready(function()
+
+  </script>
+</body>
+</html>
