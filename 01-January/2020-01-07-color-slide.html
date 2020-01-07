@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color slide</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      background-color: rgba(100,100,100,0.5);
+      box-sizing: border-box;
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+
+      left: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      text-align: center;
+    }
+    #output{
+      background-color: rgba(100,100,100,1);
+      border: 1px dotted #fff;
+      font-size: 3em;
+      margin: 10px auto;
+      max-width: 85%;
+    }
+    label, input {
+      display: inline-block;
+    }
+    /*taken and modified from https://www.w3schools.com/howto/howto_js_rangeslider.asp*/
+      .color {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 70%; /* Full-width */
+        height: 35px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none;
+        margin: 10px auto;
+        border: 1px solid rgba(100,100,100,1);
+        cursor: pointer;
+      }
+
+      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
+      .color::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 45px; /* Set a specific slider handle width */
+        height: 45px; /* Slider handle height */
+        background-color: rgba(100,100,100,1);
+        cursor: pointer;
+      }
+
+      .color::-moz-range-thumb {
+        width: 45px; /* Set a specific slider handle width */
+        height: 45px; /* Slider handle height */
+        background-color: rgba(100,100,100,1);
+        cursor: pointer;
+      }
+    @media all and (max-width: 550px){
+      #output{
+        font-size: 10vw;
+        margin: 0 auto;
+        min-width: 95%;
+      }
+      label{
+        display: block;
+      }
+      .color{
+        min-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- r -->
+  <label for="r">r value</label>
+  <input type="range" min="0" max="255" value="100" step="1" class="color" id="r">
+  <br/>
+
+  <!-- g -->
+  <label for="g">g value</label>
+  <input type="range" min="0" max="255" value="100" step="1" class="color" id="g">
+  <br/>
+
+  <!-- b -->
+  <label for="b">b value</label>
+  <input type="range" min="0" max="255" value="100" step="1" class="color" id="b">
+  <br/>
+
+  <!-- a -->
+  <label for="a">a value</label>
+  <input type="range" min="0.05" max="1" value="0.5" step="0.05" class="color" id="a">
+
+  <div id="output">rgba(100,100,100,0.5)</div>
+
+  <script>
+    //act on page load
+    $(document).ready(function() {
+
+    //functions
+      function changeBGColor(colorNumber, colorLetter){
+        let r, g, b, a;
+
+        $(".color").each(function() {
+          if (this.id=="r"){
+            r = this.value;
+          } else if (this.id=="g"){
+            b = this.value;            
+          } else if (this.id=="b"){
+            g = this.value;            
+          } else if (this.id=="a"){
+            a = this.value;            
+          }
+        })
+
+        let tempColor = "rgba("+r+","+g+","+b+","+a+")";
+        $("#output").text(tempColor);
+        //change body bg to match
+        $("body, html").css("backgroundColor", tempColor);
+      } //end changeBGColor
+
+    //Event listeners
+      $(".color").on("change", function() {
+        changeBGColor(this.value, this.id);
+      });
+
+    });// end $(document).ready(function()
+
+  </script>
+</body>
+</html>
