@@ -8,3 +8,4 @@
    5. Mr. Turnip Man
    6. Mabel Sweater Maker
    7. Color Slider
+   8. Father Jack Counsels
