@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Father Jack Gives You His Counsel</title>
+  <link href="https://fonts.googleapis.com/css?family=IM+Fell+English+SC" rel="stylesheet"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      /*from http://fatherted.wikia.com/wiki/Brick*/
+      background: url(../images/2020-01-08-fj/2020-01-08-fj.png);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      box-sizing: border-box;
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+      text-decoration: 
+      text-shadow: 1px 1px 1px rgb(97,55,39); /*https://css-tricks.com/almanac/properties/t/text-shadow/*/
+    }
+    #top{
+      background-color: rgba(255,255,255,0.5);
+      height: 30vh;
+      min-width: 100%;
+      top: 0;
+    }
+    #result{
+      color: rgb(63, 67, 44);
+      font-family: 'IM Fell English SC', serif;
+      font-size: 4.5vw;
+      font-variant-caps: all-small-caps;
+      margin: 0;
+      min-height: 16vh;
+      padding-top: 2vh;
+    }
+    #result::first-letter{
+      font-weight: bold;
+      font-size: 135%;
+      font-style: italic;
+    }
+    button{
+      background-color: rgb(97,55,39);
+      border: 2px solid rgb(63, 67, 44);
+      color: rgb(255,215,0);
+      font-size: 2.5vw;
+      height: 8vh;
+      width: 66vw;
+    }
+    @media all and (max-width: 600px){
+      #result{
+        font-size: 4.5vh;
+      }
+      button{
+        font-size: 3.5vh;
+      }
+    }
+    @media all and (max-width: 350px){
+      #top{
+        height: 40vh;
+      }
+      #result{
+        min-height: 24vh;
+      }
+      button{
+        height: 10vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top">
+    <h2 id="result">&nbsp;</h2>
+    <button id="fj">Get Counseled</button>
+  </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function() {
+
+    //make vars
+      let wisdom = [
+        "feck",
+        "yes",
+        "arse",
+        "girls",
+        "that would be an ecumenical matter",
+        "yes",
+        "brick",
+        "fed up with brick",
+        "that would be an ecumenical matter",
+        "i'm a happy camper",
+        "that would be an ecumenical matter",
+        "feck off",
+        "yes",
+        "arse biscuits",
+        "that would be an ecumenical matter",
+        "gobshite",
+        "i'm elvis",
+        "that would be an ecumenical matter"];
+      let resultDiv = document.getElementById("result");
+      let submitQuery = document.getElementById("fj");
+
+    //functions
+      function getCounseled() {
+        let resultNum = Math.floor(Math.random()*wisdom.length);
+        resultDiv.innerHTML = wisdom[resultNum];
+      }
+
+    //Event listeners
+      submitQuery.addEventListener("click", function () {
+        getCounseled();
+      });
+
+    });// end document.addEventListener("DOMContentLoaded", function()
+
+  </script>
+</body>
+</html>
