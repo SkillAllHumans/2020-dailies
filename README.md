@@ -9,3 +9,7 @@
    6. Mabel Sweater Maker
    7. Color Slider
    8. Father Jack Counsels
+   9. Tip Calculator
+   10. GPA Calculator
+   11. Random Person Maker
+   12. Calculator
