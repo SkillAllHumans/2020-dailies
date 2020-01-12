@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      border-collapse: collapse;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+    }
+    #result{
+      color: #ff0000;
+      display: block;
+      font-size: 5vw;
+      min-height: 20vh;
+      min-width: 100%;
+      padding-top: 2vh;
+      text-align: right;
+      top: 0;
+    }
+    #calculator-body{
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+      min-height: 80vh;
+     }
+    .row{
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .key{
+      background-color: #eee;
+      border: 1px solid #999;
+      box-sizing: border-box;
+      cursor: pointer;
+      display: block;
+      float: left;
+      font-size: 5vw;
+      padding: 1% 5%;
+      width: 25vw;
+      min-width: 25vw;
+      max-width: 25vw;
+    }
+    .key:hover{
+      background-color: rgba(200,200,200,0.1);
+    }
+    @media all and (max-width: 600px){
+      #result{
+        font-size: 4.5vh;
+      }
+      button{
+        font-size: 3.5vh;
+      }
+    }
+    @media all and (max-width: 350px){
+      #top{
+        height: 40vh;
+      }
+      #result{
+        min-height: 24vh;
+      }
+      button{
+        height: 10vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <input id="result" type="text" autofocus="true" />
+
+  <div id="calculator-body">
+    <div class="row" id="r0">
+      <button class="key" id="bp1">(</button>
+      <button class="key" id="bp2">)</button>
+      <button class="key" id="bc">C</button>
+      <button class="key" id="bbs">&#8592;</button>
+    </div>
+    <div class="row" id="r1">
+      <button class="key" id="b7">7</button>
+      <button class="key" id="b8">8</button>
+      <button class="key" id="b9">9</button>
+      <button class="key" id="bdiv">/</button>
+    </div>
+    <div class="row" id="r2">
+      <button class="key" id="b4">4</button>
+      <button class="key" id="b5">5</button>
+      <button class="key" id="b6">6</button>
+      <button class="key" id="bmult">*</button>
+    </div>
+    <div class="row" id="r3">
+      <button class="key" id="b1">1</button>
+      <button class="key" id="b2">2</button>
+      <button class="key" id="b3">3</button>
+      <button class="key" id="bmin">-</button>
+    </div>
+    <div class="row" id="r4">
+      <button class="key" id="b0">0</button>
+      <button class="key" id="bdot">.</button>
+      <button class="key" id="beq">=</button>
+      <button class="key" id="bplus">+</button>
+    </div>
+  </div>
+
+  <script>
+    //act on page load
+    $(document).ready(function() {
+    //want further testing on this, for bugginess.
+
+    //functions
+      function changeResultDiv(div="") {
+        $("#result").text(div);
+        $("#result").val(div);
+      }//end changeResultDiv
+      function inputProblem(input) {
+        let curVal = $("#result").text();
+        curVal += input;
+        changeResultDiv(curVal);
+        console.log(curVal);
+      }//end inputProblem
+      function calculateProblem() {
+        let curVal = $("#result").text();
+        resultVal = eval(curVal);
+        changeResultDiv(resultVal);
+      }//end calculateProblem
+
+      function checkParens(){        
+        if (down[16] && down[57]) {
+          inputProblem("\(");
+        } else if (down[16] && down[48]) {
+          inputProblem("\)");
+        } else if (down[57]) {
+          inputProblem(9);
+        } else if (down[48]) {
+          inputProblem(0);
+        } else if (down[16] && down[56]) {
+          inputProblem("*");
+        } else if (down[56]) {
+          inputProblem(8);
+        } else if (down[16] && down[191]) {
+          inputProblem("\/");
+        } else if (down[16] && down[187]) {
+          inputProblem("+");
+        }
+      }//end checkParens
+
+      //from https://stackoverflow.com/a/26426651
+      function deleteChar(direction="b"){
+        let delString = $('#result').text();
+        if (direction == "f"){
+          let cursorPos = $('#result').prop('selectionStart');
+          v = $('#result').text();
+          textBefore = v.substring(0,  cursorPos),
+          textAfter  = v.substring(cursorPos+1, v.length);
+          delString = textBefore + textAfter;
+        } else {          
+          delString = delString.slice(0, -1);
+        }
+        changeResultDiv(delString);
+      }//end deleteChar
+
+    //Event listeners
+    //from https://stackoverflow.com/a/10655316
+      let down = {};
+      $(document).keydown(function(e) {
+        down[e.keyCode] = true;
+      }).keyup(function(e) {
+        checkParens();
+        down[e.keyCode] = false;
+      }) //end https://stackoverflow.com/a/10655316
+
+    //act on keys
+    $(document).keyup(function(event) {
+      if(event.which == 8) {
+        // backspace 8
+        deleteChar("b");
+      } else if(event.which == 46){
+        // delete
+        deleteChar("f");
+      } else if(event.which == 13 || event.which == 187){
+        // enter 13, equal sign 187
+        calculateProblem();
+      } else if(event.which == 48 || event.which == 96 ){
+        // 0 48, 96 (uses keyup instead for shift+key)
+      } else if(event.which == 49 || event.which == 97){
+        // 1 49, 97
+        inputProblem(1);
+      } else if(event.which == 50 || event.which == 98){
+        // 2 50, 98
+        inputProblem(2);
+      } else if(event.which == 51 || event.which == 99){
+        // 3 51, 99
+        inputProblem(3);
+      } else if(event.which == 52 || event.which == 100){
+        // 4 52, 100
+        inputProblem(4);
+      } else if(event.which == 53 || event.which == 101){
+        // 5 53, 101
+        inputProblem(5);
+      } else if(event.which == 54 || event.which == 102){
+        // 6 54, 102
+        inputProblem(6);
+      } else if(event.which == 55 || event.which == 103){
+        // 7 55, 103
+        inputProblem(7);
+      } else if(event.which == 56 || event.which == 104){
+        // 8 56, 104 (uses keyup instead for shift+key)
+      } else if(event.which == 57 || event.which == 105){
+        // 9 57, 105 (uses keyup instead for shift+key)
+      } else if(event.which == 106){
+        // multiply  106
+        inputProblem("*");
+      } else if(event.which == 107){
+        // add 107
+        inputProblem("+");
+      } else if(event.which == 109 || event.which == 189){
+        // subtract  109, 189
+        inputProblem("-");
+      } else if(event.which == 111 || event.which == 191){
+        // divide  111, 220
+        inputProblem("\/");
+      } else if(event.which == 110 || event.which == 190){
+        // period  190,  110
+        inputProblem(".");
+      } else if(event.which == 67){
+        // c
+        changeResultDiv();
+      } else {
+
+      }// end elif
+    });// end keyup
+
+    //act on buttons
+      $("#bbs").on('click', function () {
+        deleteChar("b");
+      });
+      $("#bc").on('click', function () {
+        changeResultDiv();
+      });
+      $("#beq").on('click', function () {
+        calculateProblem();
+      });
+      $(".key").not("#beq, #bbs, #bc").on('click', function () {
+        inputProblem($(this).text());
+      });
+
+    });// end $(document).ready(function()
+
+  </script>
+</body>
+</html>
