@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Person Maker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+    }
+    #top{
+      background-color: rgba(255,255,255,0.5);
+      height: 30vh;
+      min-width: 100%;
+      top: 0;
+    }
+    #result{
+      color: rgb(63, 67, 44);
+      font-size: 4.5vw;
+      margin: 0 5vw;
+      min-height: 30vh;
+      padding-top: 2vh;
+    }
+    button{
+      background-color: rgb(97,55,39);
+      border: 2px solid rgb(63, 67, 44);
+      color: rgb(255,215,0);
+      cursor: pointer;
+      font-size: 2.5vw;
+      height: 10vh;
+      width: 66vw;
+    }
+    @media all and (max-width: 600px){
+      #result{
+        font-size: 4.5vh;
+      }
+      button{
+        font-size: 3.5vh;
+      }
+    }
+    @media all and (max-width: 350px){
+      #top{
+        height: 40vh;
+      }
+      #result{
+        min-height: 24vh;
+      }
+      button{
+        height: 10vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top">
+    <h2 id="result">&nbsp;</h2>
+    <button id="submit-button">Make a person</button>
+  </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function() {
+
+    //make vars
+      let names = ["Mohamed",
+        "Youssef",
+        "Ahmed",
+        "Mahmoud",
+        "Mustafa",
+        "Yassin",
+        "Taha",
+        "Khaled",
+        "Hamza",
+        "Bilal",
+        "Ibrahim",
+        "Hassan",
+        "Hussein",
+        "Karim",
+        "Tareq",
+        "Abdel",
+        "Rahman",
+        "Ali",
+        "Omar",
+        "Halim",
+        "Murad",
+        "Selim",
+        "Abdallah",
+        "Shaimaa",
+        "Fatma",
+        "Maha",
+        "Reem",
+        "Farida",
+        "Aya",
+        "Shahd",
+        "Ashraqat",
+        "Sahar",
+        "Fatin",
+        "Dalal",
+        "Doha",
+        "Fajr",
+        "Suha",
+        "Rowan",
+        "Hosniya",
+        "Hasnaa",
+        "Hosna",
+        "Gamila",
+        "Gamalat",
+        "Habiba",
+        "Santiago",
+        "Mateo",
+        "Juan",
+        "Matías",
+        "Nicolás",
+        "Benjamín",
+        "Pedro",
+        "Tomás",
+        "Thiago",
+        "Santino",
+        "Luis",
+        "José",
+        "Alexander",
+        "David",
+        "Angel",
+        "Carlos",
+        "Sebastián",
+        "Daniel",
+        "Jesús",
+        "Sofía",
+        "María",
+        "Lucía",
+        "Martina",
+        "Catalina",
+        "Elena",
+        "Emilia",
+        "Valentina",
+        "Paula",
+        "Zoe",
+        "Mariana",
+        "Isabella",
+        "Valeria",
+        "Gabriela",
+        "Sara",
+        "Salomé",
+        "Daniela",
+        "Victoria",
+        "Mia",
+        "Amanda",
+        "Mikaela",
+        "Camila",
+        "Amaia",
+        "Emma",
+        "Kamila",
+        "Sofia",
+        "Wei",
+        "Jie",
+        "Hao",
+        "Yi",
+        "Jun",
+        "Feng",
+        "Yong",
+        "Jian",
+        "George",
+        "Elias",
+        "Majd",
+        "Yusuf",
+        "Hana",
+        "Julian",
+        "Charbel",
+        "Adam",
+        "Omri",
+        "Eyal",
+        "Amir",
+        "Salman",
+        "Rani",
+        "Tamir",
+        "Yosef",
+        "Noam",
+        "Amit",
+        "Ariel",
+        "Adi",
+        "Yuval",
+        "Yahli",
+        "Omer",
+        "Lior",
+        "Maria",
+        "Celine",
+        "Aline",
+        "Maya",
+        "Noor",
+        "Lian",
+        "Maryam",
+        "Natalie",
+        "Tala",
+        "Miral",
+        "Eden",
+        "Yarin",
+        "Nur",
+        "Sarah",
+        "Sillin",
+        "Assil",
+        "Malk",
+        "Miyar",
+        "Sakura",
+        "Riko",
+        "Aoi",
+        "Wakana",
+        "Rin",
+        "Anna",
+        "Azuna",
+        "Himari",
+        "Hinata",
+        "Yuna",
+        "Yuina",
+        "Kaede",
+        "Lukas",
+        "Maximilian",
+        "Jakob",
+        "Tobias",
+        "Paul",
+        "Jonas",
+        "Jakub",
+        "Jan",
+        "Tomáš",
+        "Matyáš",
+        "Filip",
+        "Vojtěch",
+        "Ondřej",
+        "Lukáš",
+        "Noah",
+        "Victor",
+        "Oliver",
+        "Oscar",
+        "William",
+        "Lucas",
+        "Carl",
+        "Emil",
+        "Malthe",
+        "Frederik",
+        "Magnus",
+        "Harry",
+        "Jack",
+        "Jacob",
+        "Charlie",
+        "Muhammad",
+        "Thomas",
+        "Rasmus",
+        "Robin",
+        "Maksim",
+        "Robert",
+        "Martin",
+        "Kaspar",
+        "Andrei",
+        "Alexandru",
+        "Gabriel",
+        "Mihai",
+        "Cristian",
+        "Ştefan",
+        "Eliška",
+        "Tereza",
+        "Adéla",
+        "Natálie",
+        "Sofie",
+        "Kristýna",
+        "Karolína",
+        "Viktorie",
+        "Freja",
+        "Alma",
+        "Laura",
+        "Ida",
+        "Clara",
+        "Ella",
+        "Josefine",
+        "Olivia",
+        "Amelia",
+        "Emily",
+        "Isla",
+        "Ava",
+        "Jessica",
+        "Lily",
+        "Eliise",
+        "Sandra",
+        "Alisa",
+        "Grace",
+        "Sophie",
+        "Aoife",
+        "Lucy",
+        "Nora",
+        "Maja",
+        "Ingrid",
+        "Emilie",
+        "Zuzanna",
+        "Julia",
+        "Lena",
+        "Hanna",
+        "Zofia",
+        "Alicja",
+        "Aleksandra",
+        "Natalia",
+        "Leonor",
+        "Matilde",
+        "Beatriz",
+        "Carolina",
+        "Ana",
+        "Inês",
+        "Margarida",
+        "Ioana",
+        "Andreea",
+        "Alexandra",
+        "Antonia",
+        "Daria"];
+      let city_types = [" a tiny village in ",
+        " a small town in ",
+        " a medium-sized city in ",
+        " a large city in ",
+        " the largest city in ",
+        " the capital of ",
+        " the cultural capital of ",
+        " the financial capital of ",
+        " an unknown part of ",
+        " the backwoods of "];
+      let countries = ["China.",
+        "India.",
+        "the United States.",
+        "Indonesia.",
+        "Brazil.",
+        "Pakistan.",
+        "Bangladesh.",
+        "Russia.",
+        "Nigeria.",
+        "Japan.",
+        "Mexico.",
+        "the Philippines.",
+        "Vietnam.",
+        "Germany.",
+        "Egypt.",
+        "Ethiopia.",
+        "Turkey.",
+        "Israel.",
+        "Thailand.",
+        "the United Kingdom.",
+        "Italy.",
+        "South Korea.",
+        "Burma.",
+        "Ukraine.",
+        "Colombia.",
+        "South Africa.",
+        "Spain.",
+        "Argentina.",
+        "Tanzania.",
+        "Sudan.",
+        "Poland.",
+        "Kenya.",
+        "Morocco.",
+        "Canada.",
+        "Algeria.",
+        "Afghanistan.",
+        "Uganda.",
+        "Nepal.",
+        "Peru.",
+        "Uzbekistan.",
+        "Saudi Arabia.",
+        "Iraq.",
+        "Venezuela.",
+        "Malaysia.",
+        "North Korea.",
+        "Ghana.",
+        "Taiwan.",
+        "Romania.",
+        "Yemen.",
+        "Sri Lanka.",
+        "Mozambique.",
+        "Australia.",
+        "Madagascar."];
+      let months = ["January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"];
+      //page element vars
+      let resultDiv = document.getElementById("result");
+      let submitQuery = document.getElementById("submit-button");
+
+    //functions
+      function makePerson() {
+        //name the person
+        p_firstname = names[Math.floor(Math.random()*names.length)];
+        p_lastname = names[Math.floor(Math.random()*names.length)];
+          //ensure unique values
+          while (p_firstname === p_lastname) {
+            p_lastname = names[Math.floor(Math.random()*names.length)];
+          }
+        //places and dates
+        p_city_type = city_types[Math.floor(Math.random()*city_types.length)];
+        p_country = countries[Math.floor(Math.random()*countries.length)];
+		p_this_year = new Date().getFullYear();
+        p_birth_year = Math.floor(Math.random()*(2019-1920+1)+1920);
+        p_birth_month = months[Math.floor(Math.random()*months.length)];
+        //output
+        resultDiv.innerHTML = "In " + p_birth_month + " of " + p_birth_year + ", " + p_firstname + " " + p_lastname + "<br/> was born in " + p_city_type + p_country;
+      }//end makePerson
+
+    //Event listeners
+      submitQuery.addEventListener("click", function () {
+        makePerson();
+      });
+
+    });// end document.addEventListener("DOMContentLoaded", function()
+
+  </script>
+</body>
+</html>
