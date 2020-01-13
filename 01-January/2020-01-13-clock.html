@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      border-collapse: collapse;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+    }
+    #time{
+      margin-top: 35vh;
+      min-height: 25vh;
+    }
+    .col{
+      display: inline-block;
+      font-size: 10vw;
+      min-height: 25vh;
+      min-width: 12vw;
+      width: 15vw;
+    }
+    #ampm{
+      font-size: 5vw;
+      vertical-align: top;
+    }
+     #minutes::before, #seconds::before{
+      content: ":\00a0";
+    }
+  </style>
+</head>
+<body>
+
+  <div id="time">
+      <span class="col" id="hours">00</span>
+      <span class="col" id="minutes">00</span>
+      <span class="col" id="seconds">00</span>
+      <span class="col" id="ampm">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function() {
+      //set vars
+      let hoursSpan = document.getElementById("hours");
+      let minutesSpan = document.getElementById("minutes");
+      let secondsSpan = document.getElementById("seconds");
+      let ampmSpan = document.getElementById("ampm");
+
+      //get time parts
+      function timeParts(){
+        timeNow = new Date();
+        curHours = timeNow.getHours();
+        curMinutes = timeNow.getMinutes();
+        curSeconds = timeNow.getSeconds();
+        add0s(curHours, curMinutes, curSeconds);
+      }//end timeParts
+
+      function make12s(h){
+        if (h == 0){
+          h = 12;
+          ap = "\u00a0 A.M.";
+        } else if (h > 12){
+          h -= 12;
+          ap = "\u00a0 P.M.";
+        } else {
+          ap = "\u00a0 A.M.";
+        }
+        return [h, ap];
+      }// end make12s
+
+      function add0s(h, m, s){
+        timeArr = [h, m, s];
+        for (var i = timeArr.length - 1; i >= 0; i--) {
+          if (timeArr[i] < 10){
+            timeArr[i] = "0" + timeArr[i];
+          }
+        }
+        displayTime(timeArr[0], timeArr[1], timeArr[2]);
+      }// end make12s
+
+      function displayTime(h, m, s, ap){
+        hAndAParr = make12s(h);
+        hoursSpan.innerHTML = hAndAParr[0];
+        minutesSpan.innerHTML = m;
+        secondsSpan.innerHTML = s;
+        ampmSpan.innerHTML = hAndAParr[1];
+      }//end displayTime
+
+      //update clock
+      setInterval(function(){
+        timeParts();
+      }, 1000);//end interval
+
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
