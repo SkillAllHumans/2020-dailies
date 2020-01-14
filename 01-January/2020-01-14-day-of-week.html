@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Day of week</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      border-collapse: collapse;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      font-size: 3.5vw;
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+    }
+    #time, #output{
+      margin-top: 15vh;
+      min-height: 35vh;
+    }
+    input{
+      font-size: 3vw;
+      padding: 1vh 1vw;
+    }
+    .day{
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="time">
+    <div id="input">
+      <label for="input-date">Input date:</label>
+      <input type="date" id="input-date" name="input-date" autofocus="true" required="true">
+    </div>
+    <div id="output">
+      &nbsp;
+    </div>
+  </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let inputDate = document.getElementById("input-date");
+      let outputDiv = document.getElementById("output");
+      let today = new Date().toISOString().substring(0, 10);//https://stackoverflow.com/a/14246394
+      let verbTense = " is a ";
+      let weekdays = ["<span class='day'>Sunday</span>.",
+        "<span class='day'>Monday</span>.",
+        "<span class='day'>Tuesday</span>.",
+        "<span class='day'>Wednesday</span>.",
+        "<span class='day'>Thursday</span>.",
+        "<span class='day'>Friday</span>.",
+        "<span class='day'>Saturday</span>."];
+
+      //functions
+      function findDayOfWeek(iDate=today){
+        oDate = new Date(iDate);
+        dow = oDate.getDay();
+        setVerbTense(iDate);
+        outputDiv.innerHTML = oDate.toISOString().substring(0, 10) + verbTense + weekdays[dow];
+      }//end findDayOfWeek
+
+      function setDate(iDate=today){
+        inputDate.value = iDate;
+      }//end setDate
+
+      function setVerbTense(iDate=today){
+        if (iDate > today){
+          verbTense = " will be a ";
+        } else if (iDate < today){
+          verbTense = " was a ";
+        }
+      }//end setVerbTense
+
+      //Event listeners
+      inputDate.addEventListener("change", function () {
+        findDayOfWeek(inputDate.value);
+      });
+
+      //set date to today on body load
+      setDate();
+      findDayOfWeek(inputDate.value);
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
