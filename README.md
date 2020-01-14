@@ -13,3 +13,5 @@
    10. GPA Calculator
    11. Random Person Maker
    12. Calculator
+   13. Clock
+   14. Day of the Week
