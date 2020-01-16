@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Duck Flight</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      border-collapse: collapse;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      background-color: #0ed5fc;
+      font-size: 3.5vw;
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+    }
+    button{
+      background-color: #9de40c;
+      cursor: pointer;
+      font-size: 2.5vw;
+      height: 8vh;
+      margin-top: 35vh;
+      width: 66vw;
+    }
+    #duck{
+      display: inline-block;
+      height: 5vh;
+      width: 5vw;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="start-button">Start</button>
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let bodyTag = document.getElementsByTagName("body")[0];
+      let startButton = document.getElementById("start-button");
+
+      //functions
+      function startPress(){
+        startButton.parentNode.removeChild(startButton);
+        makeDuck();
+      }//end startPress
+
+      function makeDuck(){
+        newDuck = document.createElement("img");
+        newDuck.src = "../images/2020-01-16-duck-flight/2020-01-16-duck-flight.png";
+        newDuck.setAttribute('alt', 'duck');
+        newDuck.id = "duck";
+        //set start positions
+        newDuck.style.marginLeft = (0 + (Math.random() * 100)) + "vw";
+        newDuck.style.marginTop = (100 + (Math.random() * 150)) + "vh";;
+        bodyTag.appendChild(newDuck);
+        moveDuck(newDuck);
+      }//end makeDuck
+
+      function moveDuck(duck){
+        move = setInterval(function() {
+          newWidth = (parseFloat(duck.style.marginLeft) - (1 + (Math.random() * 10)));
+          newHeight = (parseFloat(duck.style.marginTop) - (1 + (Math.random() * 10)));
+          duck.style.marginLeft = newWidth + "vw";
+          duck.style.marginTop = newHeight + "vh";
+        }, 100);
+        setTimeout(function(){
+          clearInterval(move);
+        }, 6000);
+      }//end moveDuck
+
+      //Event listeners
+      startButton.addEventListener("click", function () {
+        startPress();
+      });
+
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
