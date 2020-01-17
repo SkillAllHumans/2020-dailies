@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Duck Hunt Basic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      border-collapse: collapse;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      background-color: #0ed5fc;
+      font-size: 3.5vw;
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+    }
+    button{
+      background-color: #9de40c;
+      cursor: pointer;
+      font-size: 2.5vw;
+      height: 16vh;
+      margin-top: 35vh;
+      width: 66vw;
+    }
+    #duck{
+      display: inline-block;
+      height: 10vh;
+      width: 10vw;
+    }
+    #duck:hover{
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="start-button">Start</button>
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let bodyTag = document.getElementsByTagName("body")[0];
+      let startButton = document.getElementById("start-button");
+      let score = 0;
+      let chances = 6;
+      var start = false;
+
+      //functions
+      function startPress(){
+        startButton.remove();
+        start = true;
+        shootingGame();
+      }//end startPress
+
+      function shootingGame(){
+        $("#result").remove();
+        $("#duck").remove();
+        if (chances > 0) {
+          makeDuck();
+        } else {
+          start = false;
+          gameResults();
+        }
+      }//end shootingGame
+
+      function makeDuck(){
+        newDuck = document.createElement("img");
+        newDuck.src = "../images/2020-01-16-duck-flight/2020-01-16-duck-flight.png";
+        newDuck.setAttribute('alt', 'duck');
+        newDuck.id = "duck";
+        //set start positions
+        newDuck.style.marginLeft = "100vw";
+        newDuck.style.marginTop = "100vh";;
+        bodyTag.appendChild(newDuck);
+        // next up
+        moveDuck(newDuck);
+      }//end makeDuck
+
+      function moveDuck(duck){
+        move = setInterval(function() {
+          newLeft = parseInt(duck.style.marginLeft) - 5;
+          newTop = parseInt(duck.style.marginTop) - 5;
+          //console.log(newLeft);
+          if (newLeft > -300) {
+            duck.style.marginLeft = newLeft + "vw";
+            duck.style.marginTop = newTop + "vh";
+          } else {
+            shootingGame();
+          }// end if else
+        }, 100);
+        setTimeout(function(){
+          clearInterval(move);
+        }, 8000);
+      }//end moveDuck
+
+      function shootDuck(){
+        $("#duck").hide();
+        score++;
+      }//end shootDuck
+
+      function missDuck(){
+      }//end missDuck
+
+      function gameResults(){
+        resultDiv = document.createElement("div");
+        start = false;
+        resultDiv.id = "result";
+        resultDiv.innerHTML = "Your score is " + score + " out of 5. Reload page to play again.";
+        bodyTag.appendChild(resultDiv);
+      }
+
+      //Event listeners
+      startButton.addEventListener("click", function () {
+        startPress();
+      });
+
+      $("body").click(function() {
+        if ($("#duck").is(":hover") && start===true) {
+          shootDuck();
+        }// end if/else
+        chances--;
+        console.log(score + ", " + chances);
+        shootingGame();
+      });
+
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
