@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Imperial Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+    }
+    html, body {
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+    }
+    #top{
+      background-color: rgba(255,255,255,0.5);
+      height: 30vh;
+      min-width: 100%;
+      top: 0;
+    }
+    #result{
+      color: rgb(63, 67, 44);
+      font-size: 4.5vw;
+      margin: 0 5vw;
+      min-height: 30vh;
+      padding-top: 2vh;
+    }
+    button{
+      background-color: rgb(97,55,39);
+      border: 2px solid rgb(63, 67, 44);
+      color: rgb(255,215,0);
+      cursor: pointer;
+      font-size: 2.5vw;
+      height: 10vh;
+      width: 66vw;
+    }
+    label{
+      margin-right: 1vw;
+    }
+    input[type="radio"]:checked+label{
+      font-weight: bold;
+    }
+    @media all and (max-width: 430px){
+      #result{
+        clear: both;
+        font-size: 4.5vh;
+      }
+      .input{
+        float: left;
+      }
+      .input:first-child{
+        clear: both;
+        display: block;
+        float: none;
+      }
+      .input:nth-child(2n){
+        clear: both;
+      }
+      #top{
+        margin: 0vh 5vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top">
+    <span class="input"><input type="number" id="number" placeholder="1" min="1" max="1028" value="1" autofocus="true"></span>
+    <span class="input"><input type="radio" id="tsp" name="unit" value="tsp"><label for="tsp">tsp</label></span>
+    <span class="input"><input type="radio" id="tbsp" name="unit" value="tbsp"><label for="tbsp">tbsp</label></span>
+    <span class="input"><input type="radio" id="cup" name="unit" value="cup" checked><label for="cup">cup</label></span>
+    <span class="input"><input type="radio" id="pint" name="unit" value="pint"><label for="pint">pint</label></span>
+    <span class="input"><input type="radio" id="quart" name="unit" value="quart"><label for="quart">quart</label></span>
+    <span class="input"><input type="radio" id="gallon" name="unit" value="gallon"><label for="gallon">gallon</label></span>
+  </div>
+  <div id="result">&nbsp;</div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function() {
+
+    //make vars
+      //page element vars
+      let resultDiv = document.getElementById("result");
+      let bodyTag = document.getElementsByTagName("body")[0];
+
+      let units = ["tsps", "tbsps", "cups", "pints", "quarts", "gallons"];
+      let dividers = [48, 16, 1, 0.5, 0.25, 0.0625];
+
+      let radios = document.getElementsByName('unit');
+      let numberInput = document.getElementById("number");
+
+      let chosenUnit = "cup";
+      let chosenNumber = 2;
+      let inputToCups = 1;
+
+      //normalize everything relative to cups
+      //48 tsps to cup
+      //16 tbsps to cup
+      //.5 pints to cup
+      //.25 quarts to cup
+      //.0625 gallons to cup
+
+    //functions
+      function getValues(){
+        resultDiv.innerHTML = "";
+        chosenNumber = numberInput.value;
+        // https://stackoverflow.com/a/9618826
+        for (let i = 0, length = radios.length; i < length; i++){
+         if (radios[i].checked){
+          // do whatever you want with the checked radio
+          chosenUnit = radios[i].value;
+          break;
+         }//end if
+        }//end for
+        normalizeToCups(chosenNumber, chosenUnit);
+      }//end getValues
+
+      function normalizeToCups(chosenNumber, chosenUnit){
+        switch (chosenUnit){
+          case "tsp":
+            inputToCups = chosenNumber / 48;
+            break;
+          case "tbsp":
+            inputToCups = chosenNumber / 16;
+            break;
+            break;
+          case "pint":
+            inputToCups = chosenNumber / 0.5;
+            break;
+          case "quart":
+            inputToCups = chosenNumber / 0.25;
+            break;
+          case "gallon":
+            inputToCups = chosenNumber / 0.0625;
+            break;
+          default:
+            inputToCups = chosenNumber / 1;
+        }//end switch
+        getUnits(chosenNumber);
+      }
+
+      function getUnits(chosenNumber){
+        for (let i = 0; i < units.length; i++) {
+          temp = "<span class='output'>" + chosenNumber + " " + chosenUnit + " is " + (dividers[i] * inputToCups) + " " + units[i] + ".</span><br/>";          
+          resultDiv.innerHTML += temp;
+        }//end for
+        reset();
+      }//end getUnits
+
+      function reset(){        
+        chosenUnit = "cup";
+        chosenNumber = 2;
+        divider = 1;
+      }
+
+    //Event listeners
+      bodyTag.addEventListener("change", function(){
+        getValues();
+      });
+
+      //on page load
+      getValues();
+    });// end document.addEventListener("DOMContentLoaded", function()
+
+  </script>
+</body>
+</html>
