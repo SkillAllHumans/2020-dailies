@@ -2,13 +2,11 @@
 
 # In each repetition through the loop, the program should prompt the user for name of the expense and the amount of the expense. The program should print the name of the expense and the amount of the expense. keep a running total of all expenses entered. When the loop finishes, the program should display the total amount that the user entered and indicate if the total amount is over or under budget.
 
-
 # The program should print the amount of the expense for each item next to item name
 # The program should display the amount budgeted
 # The program should display the amount actually spent
 # The program should display the amount that the user is over or under budge
 # indicate if the total amount is over or under budget.
-
 
 def start_budgeting():
   #Prompt user for initial input
