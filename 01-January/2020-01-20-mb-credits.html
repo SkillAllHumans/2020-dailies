@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Murphy Brown Credits</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      border-collapse: collapse;
+      box-sizing: border-box;
+      height: 100%;
+      margin: 0;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 0;
+      width: 100%;
+    }
+    html, body {
+      background-color: #000;
+      color: #fff;
+
+      font-family: "Franklin Gothic", Courier, sans-serif;
+      font-size: 8vh;
+      font-style: italic;
+
+      left: 0;
+      margin: 0 auto;
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */
+    }
+    /*red line
+      color ab1618
+      width: 85%
+      bottom: 14.5%
+      thickness 6px*/
+    #top-parent{
+      height: 85%;
+      left: 0;
+      margin-left: 15%;
+      position: relative;
+      top: 0;
+      vertical-align: bottom;
+      width: 100%;
+    }
+    #text-bar-top{
+      display: none;
+      margin-top: 75vh;
+      position: absolute;
+      text-transform: capitalize;
+      vertical-align: bottom;
+    }
+    #bottom-parent{
+      border-top: 1.5vh solid #ab1618;
+      margin-left: 15%;
+      position: absolute;
+      text-align: left;
+      text-transform: uppercase;
+      top: 85%;
+      width: 100%;
+      /*http://jsfiddle.net/3fTyt/1120/*/
+/*        -webkit-box-shadow: inset 0 20px 20px -20px #ab1618;
+        -moz-box-shadow: inset 0 20px 20px -20px #ab1618;
+        box-shadow: inset 0 20px 20px -20px #ab1618;*/
+    }
+    #text-bar-bottom{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-parent">
+    <div id="text-bar-top">&nbsp;</div>
+  </div>
+  <div id="bottom-parent">
+    <div id="text-bar-bottom">Murphy Brown</div>
+  </div>
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let slideNumber = 0;
+      let slideNamesTop = ["starring", "also starring", "", "", "created by", "directed by", "All done"];
+      let slideNamesBottom = ["candice bergen",
+        "pat corley",
+        "faith ford",
+        "charles kimbrough",
+        "diane english",
+        "peter bonerz",
+        "reload to replay"];
+
+      function start(){
+        setTimeout(
+          function(){
+            $("#text-bar-top").fadeOut(2000);
+            $("#text-bar-bottom").fadeOut(2000);
+          }, 2000);//end settimeout
+
+        setTimeout(
+          function(){
+            if (slideNumber < 6) {
+              changeNames();
+              slideNumber++;
+            } else {
+              end();
+            }//end if else
+          }, 7000);//end settimeout
+        }//end start
+
+      function end(){
+        $("#text-bar-top").css("display", "block").text(slideNamesTop[slideNumber]);
+        $("#text-bar-bottom").css("display", "block").text(slideNamesBottom[slideNumber]);
+      }//end end
+
+      function changeNames(){
+        $("#text-bar-top").text(slideNamesTop[slideNumber]).fadeIn(4000);
+        $("#text-bar-bottom").text(slideNamesBottom[slideNumber]).fadeIn(4000);
+        start();
+      }//end changeNames
+
+      //call
+      $("#text-bar-top, #text-bar-bottom").fadeIn(4000);
+      start();
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
