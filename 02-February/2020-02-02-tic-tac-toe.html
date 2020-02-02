@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic-Tac-Toe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      height: 100%;
+      min-height: 100%;
+      min-width: 100%;
+      padding: 2%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    html, body {
+      box-sizing: border-box;
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */   
+
+      margin: 1vh 0.5vw;
+      padding: 1vh 1vw;
+    }
+    h3{
+      display: inline-block;
+      margin: 2px;
+    }
+    /*tile styling*/
+    #info{
+      margin: 0 auto;
+      min-height: 10vh;
+      min-width: 95vw;
+      text-align: center;
+    }
+    #board{
+      margin: 0 auto;
+      min-height: 80vh;
+      min-width: 95vw;
+      padding: 1%;
+      text-align: center;
+    }
+    .tile{
+      background-color: #eee;
+      border-radius: 3px;
+      box-sizing: border-box;
+      color: #f4e8e0;
+      cursor: pointer;
+      display: inline-block;
+      /*line height for vertical center https://stackoverflow.com/a/8865463*/
+      line-height: 20vh;
+      margin: 4px;
+      min-width: 20vw;
+      min-height: 20vh;
+      padding: 4px;
+    }
+    .x{
+      background: red;
+      cursor: default;
+    }
+    .o{
+      background: blue;
+      cursor: default;
+    }
+    .winner{
+      background-color: green;
+    }
+    #x, #o{
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="info">
+    <h3>Turns:</h3>
+    X: <span id="x">0</span>; 
+    O: <span id="o">0</span>
+    <h4>X goes first.</h4>
+    <button id="new-game">New Game</button>
+  </div>
+
+  <div id="board">
+    <span class="tile" id="t1">&nbsp;</span>
+    <span class="tile" id="t2">&nbsp;</span>
+    <span class="tile" id="t3">&nbsp;</span><br/>
+
+    <span class="tile" id="t4">&nbsp;</span>
+    <span class="tile" id="t5">&nbsp;</span>
+    <span class="tile" id="t6">&nbsp;</span><br/>
+
+    <span class="tile" id="t7">&nbsp;</span>
+    <span class="tile" id="t8">&nbsp;</span>
+    <span class="tile" id="t9">&nbsp;</span><br/>
+
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+      //variables
+      let xturns = 0;
+      let oturns = 0;
+      let current_turn = "x";
+      let current_string = "---------"
+
+      //functions
+      function check_tile(tile){
+        if ($(tile).hasClass("x") || $(tile).hasClass("x")){
+          $("h4").text("That tile has already been selected. Try again.");
+        } else if (current_turn == "x"){
+          update_turns(tile, "x", "o");
+        } else if (current_turn == "o") {
+          update_turns(tile, "o", "x");
+        }
+      }// end check_tile
+
+    function update_turns(tile, curr, next){
+      $(tile).addClass(curr);
+      $(tile).text(curr.toUpperCase());
+      if (curr == "x") {
+        xturns += 1;
+        $("#"+curr).text(xturns);
+      } else if (curr == "o") {
+        oturns += 1;
+        $("#"+curr).text(oturns);
+      }
+      current_turn = next;
+      eval_for_string(tile, curr, next);
+    }
+
+    function eval_for_string(tile, curr, next) {
+      place_number = tile.id[1]-1;
+      front = current_string.substring(0, place_number);
+      end = current_string.substring(place_number+1, 9);
+      current_string = front+curr+end;
+      eval_for_row(curr);
+    }
+
+    function eval_for_row(curr){
+      if (current_string.substring(0, 3) == "xxx" || current_string.substring(0, 3) == "ooo"){
+        $("#t1, #t2, #t3").addClass("winner");
+        game_ending(curr);
+      } else if (current_string.substring(3, 6) == "xxx" || current_string.substring(3, 6) == "ooo"){
+        $("#t4, #t5, #t6").addClass("winner");
+        game_ending(curr);
+      } else if (current_string.substring(6, 9) == "xxx" || current_string.substring(6, 9) == "ooo"){
+        $("#t7, #t8, #t9").addClass("winner");
+        game_ending(curr);
+      } 
+      else {
+        eval_for_col(curr);
+      }
+    } //end eval_for_row
+
+    function eval_for_col(curr){
+      col1 = current_string[0]+ current_string[3] + current_string[6];
+      col2 = current_string[1]+ current_string[4] + current_string[7];
+      col3 = current_string[2]+ current_string[5] + current_string[8];
+      if (col1 == "xxx" ||col1 == "ooo"){
+        $("#t1, #t4, #t7").addClass("winner");
+        game_ending(curr);
+      } else if (col2 == "xxx" || col2 == "ooo"){
+        $("#t2, #t5, #t8").addClass("winner");
+        game_ending(curr);
+      } else if (col3 == "xxx" || col3 == "ooo"){
+        $("#t3, #t6, #t9").addClass("winner");
+        game_ending(curr);
+      } 
+      else {
+        eval_for_diag(curr);
+      }
+    } //end eval_for_col
+
+    function eval_for_diag(curr){
+      diag1 = current_string[0]+ current_string[4] + current_string[8];
+      diag2 = current_string[2]+ current_string[4] + current_string[6];
+      if (diag1 == "xxx" ||diag1 == "ooo"){
+        $("#t1, #t5, #t9").addClass("winner");
+        game_ending(curr);
+      } else if (diag2 == "xxx" || diag2 == "ooo"){
+        $("#t3, #t5, #t7").addClass("winner");
+        game_ending(curr);
+      } else {
+        check_for_stalemate();
+      }
+    } //end eval_for_diag
+
+    function check_for_stalemate(){
+      //regex https://stackoverflow.com/a/14783232
+      var matchedPosition = current_string.search(/-/);
+      if (matchedPosition == -1) {
+        $("h4").text("Stalemate. Nobody wins.");
+        $("body").off("click", "#t1, #t2, #t3, #t4, #t5, #t6, #t7, #t8, #t9");
+      }
+    }
+
+    function game_ending(curr){
+      $("h4").text(curr.toUpperCase() + " wins!");
+      $("body").off("click", "#t1, #t2, #t3, #t4, #t5, #t6, #t7, #t8, #t9");
+    }
+
+    //Event listeners
+      $("body").on("click", "#t1, #t2, #t3, #t4, #t5, #t6, #t7, #t8, #t9", function(){
+        check_tile(this);
+      });
+      $("#new-game").on("click", function(){
+        location.reload(false);
+      });
+      //on page load
+    });
+  </script>
+</body>
+</html>
