@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weight Range</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+    }
+    html, body {
+      box-sizing: border-box;
+      margin: 0.5em;
+      overflow-x: hidden;
+      padding: 0.5em;
+    }
+
+    .output{
+      color: #eaeda2;
+      font-size: 30px;
+      padding: 5%;
+    }
+    form, input{
+      padding: 5px;   
+      margin: 0.5em auto;
+      font-size: 20px;
+      text-align: center;
+    }
+    input{
+      background-color: rgba(30,87,153,0.4);
+      border: 1px solid #1e5799;
+      color: #eaeda2;
+    }
+    h1{
+      font-size: 2em;
+      margin: 2px;
+    }
+    #result-out{
+      font-size: 1.5em;
+      margin: 0 auto;
+      max-width: 80%;
+      min-height: 33vh;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Weight Range</h1>
+  <div id="result-out">&nbsp;</div>
+  <form action="#" method="get">
+      <h3>Which system are you using?</h3>
+
+      <input type="radio" name="systemChoice" id="imperial" value="imperial" checked><label for="imperial"> Imperial</label>
+      <input type="radio" name="systemChoice" id="metric" value="metric"><label for="metric"> Metric</label><br/>
+     
+      <label>Height 
+        <input type="text" id="height" name="height" value="68">
+      </label><br/>
+
+      <label>Weight 
+        <input type="text" id="weight" name="weight" value="160">
+      </label><br/>
+
+      <button type="button" id="submit">Calculate your BMI</button><br/>
+  </form>
+
+  <!-- info from https://www.cancer.org/cancer/cancer-causes/diet-physical-activity/body-weight-and-cancer-risk/adult-bmi.html -->
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let bodyTag = document.getElementsByTagName("body")[0];
+      let height = document.getElementById("height");
+      let weight = document.getElementById("weight");
+      let startButton = document.getElementById("submit");
+      let resultOut = document.getElementById("result-out");
+      let imperial = document.getElementById("imperial");
+      let metric = document.getElementById("metric");
+
+      //functions
+      function calculate_bmi(type){
+        h = height.value;
+        w = weight.value;
+
+        if (type == "metric") {
+          result = calculate_metric(h, w);          
+        } else if (type == "imperial") {
+          result = calculate_imperial(h, w);
+        }
+
+        outputResult(h, w, result, type);
+      }//end calculate_bmi
+
+      function calculate_imperial(h, w){
+        return ((w*703)/(h*h)).toFixed(2);
+      }//end calculate_imperial
+
+      function calculate_metric(h, w){
+        h = h/100;
+        return ((w)/(h*h)).toFixed(2);
+      }//end calculate_metric
+
+      function turnMetrictoImperialH(i){
+        return ((i*0.393700789)).toFixed(2);
+      }//end turnMetrictoImperialH
+
+      function turnImperialtoMetricH(i){
+        return ((i/0.393700789)).toFixed(2);
+      }//end turnImperialtoMetricH
+
+      function turnMetrictoImperialW(i){
+        return ((i/0.45359237)).toFixed(2);
+      }//end turnMetrictoImperialW
+
+      function turnImperialtoMetricW(i){
+        return ((i*0.45359237)).toFixed(2);
+      }//end turnImperialtoMetricW
+
+      function outputResult(h, w, result, type) {
+        if (type == "metric"){
+          hUnit = " cms";
+          wUnit = " kilos";
+          OhUnit = " inches";
+          OwUnit = " pounds";
+          conversionH = turnMetrictoImperialH(h);
+          conversionW = turnMetrictoImperialW(w);
+          oppoType = "imperial"
+        } else if (type == "imperial") {
+          hUnit = " inches";
+          wUnit = " pounds";
+          OhUnit = " cms";
+          OwUnit = " kilos";
+          conversionH = turnImperialtoMetricH(h);
+          conversionW = turnImperialtoMetricW(w);
+          oppoType = "metric"
+        }
+        resultString = "Your height of " + h  + hUnit
+        + " and weight of " + w + wUnit
+        + "<br/> gives you a Body Mass Index of " + result + ".<br/>"
+        + "<br/> Your approximate height in " + oppoType
+        + " is " + conversionH + OhUnit
+        + "<br/> and your approximate weight is " + conversionW + OwUnit + ".";
+
+        bmi_range(result, resultString);
+      }
+
+      function bmi_range(result){
+        // info from http://www.bmi-calculator.net
+        if (result <= 18.5) {
+          range = "underweight";
+          note = "This is unhealthy."
+          color = "sandybrown";
+        } else if (result <= 24.99) {
+          range = "normal weight";
+          note = "This is healthy."
+          color = "green";
+        } else if (result <= 29.99 && result >= 25) {
+          range = "overweight";
+          note = "This is unhealthy."
+          color = "yellow";
+        } else if (result <= 34.99 && result >= 30) {
+          range = "class 1 obese";
+          note = "This is very unhealthy."
+          color = "orange";
+        } else if (result <= 39.99 && result >= 35) {
+          range = "class 2 obese";
+          note = "This is extremely unhealthy."
+          color = "orangered";
+        } else {
+          range = "morbidly obese";
+          note = "This is potentially deadly."
+          color = "red";
+        }
+
+        resultOut.innerHTML = resultString + "<br>Your weight range is "
+          + range + ". <br/>  <br/>" + note;
+        resultOut.style.backgroundColor = color;
+
+      }// end bmi_range
+
+      //Event listeners
+      startButton.addEventListener("click", function(){
+        type = document.querySelector('input[name = "systemChoice"]:checked').value;
+        calculate_bmi(type);
+        return false;
+      });
+      height.addEventListener("change", function(){
+        type = document.querySelector('input[name = "systemChoice"]:checked').value;
+        calculate_bmi(type);
+      });
+      weight.addEventListener("change", function(){
+        type = document.querySelector('input[name = "systemChoice"]:checked').value;
+        calculate_bmi(type);
+      });
+      height.addEventListener("keyup", function(){
+        type = document.querySelector('input[name = "systemChoice"]:checked').value;
+        calculate_bmi(type);
+      });
+      weight.addEventListener("keyup", function(){
+        type = document.querySelector('input[name = "systemChoice"]:checked').value;
+        calculate_bmi(type);
+      });
+      imperial.addEventListener("click", function(){
+        calculate_bmi("imperial");
+        return false;
+      });
+      metric.addEventListener("click", function(){
+        calculate_bmi("metric");
+        return false;
+      });
+      //on page load
+
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
