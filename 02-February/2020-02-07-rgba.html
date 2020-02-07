@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RGBa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body{
+      box-sizing: border-box; 
+      height: 100%;
+      margin: 0;
+      min-height: 100%;
+      min-width: 100%;
+      overflow: hidden;
+      padding: 0;
+      width: 100%;
+    }
+    h3{
+      background-color: #eee !important;
+      margin: 6px;
+      padding: 6px;
+    }
+
+    .col{
+      box-sizing: border-box;
+      cursor: pointer;
+      display: inline-block;
+      float: left;
+      margin: 0;
+      max-height: 50vh;
+      min-height: 50vh;
+      max-width: 25%;
+      min-width: 25%;
+      padding: 10vh 0 0 0;
+      text-align: center;
+      text-shadow: 0 0 10px #aaa;
+    }
+
+    #result, #columns{
+      box-sizing: border-box;
+      clear: both;
+      max-height: 50%;
+      min-height: 50%;
+      max-width: 100%;
+      min-width: 100%;      
+    }
+    #result{
+      font-size: 3em;
+      font-weight: bold;
+      padding-top: 0.5vh;
+      text-align: center;
+    }
+    #columns{
+      /*stop text highlighting, from https://css-tricks.com/almanac/properties/u/user-select/*/
+        -webkit-user-select: none;  /* Chrome all / Safari all */
+        -moz-user-select: none;     /* Firefox all */
+        -ms-user-select: none;      /* IE 10+ */
+        user-select: none;          /* Likely future */  
+    }
+
+    #red{
+      background-color: rgba(100, 0, 0, 1);
+    }
+    #green{
+      background-color: rgba(0, 100, 0, 1);
+    }
+    #blue{
+      background-color: rgba(0, 0, 100, 1);
+    }
+    #alpha{
+      background-color: rgba(0, 0, 0, 1);
+    }
+    #red::before{
+      content: "RED";
+    }
+    #green::before{
+      content: "GREEN";
+    }
+    #blue::before{
+      content: "BLUE";
+    }
+    #alpha::before{
+      content: "ALPHA";
+    }
+    #resultColor{
+      background-color: transparent;
+    }
+
+    /*adapted from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_rangeslider*/
+    .slider {
+      background: #d3d3d3;
+      display: inline-block;
+      height: 5vh;
+      margin: 0 auto;
+      outline: none;
+      text-align: center;
+      width: 80%;
+    }
+
+    /*media queries*/
+    @media all and (max-width: 768px){
+      html, body{
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="result">
+    <h3 id="resultColor">rgba(127, 127, 127, 1)</h3>
+    <div>Slide or click to change the color values.</div>
+  </div>
+  <div id="columns">
+    <div id="red" class="col">
+      <span id="redNumber">127</span>
+      <br/>
+      <input type="range" min="-1" max="254" value="127" step="1" class="slider" id="redRange" />
+    </div>
+    <div id="green" class="col">
+      <span id="greenNumber">127</span>
+      <br/>
+      <input type="range" min="-1" max="254" value="127" step="1" class="slider" id="greenRange" />
+    </div>
+    <div id="blue" class="col">
+      <span id="blueNumber">127</span>
+      <br/>
+      <input type="range" min="-1" max="254" value="127" step="1" class="slider" id="blueRange" />
+    </div>
+    <div id="alpha" class="col">
+      <span id="alphaNumber">1</span>
+      <br/>
+      <input type="range" min="0" max="1.0" value="1.0" step="0.05" class="slider" id="alphaRange" />
+    </div>
+  </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+        let bodyTag = document.getElementsByTagName("body")[0];
+        let resultDiv = document.getElementById("result");
+        let resultColor = document.getElementById("resultColor");
+        // color divs
+        let red = document.getElementById("red");
+        let green = document.getElementById("green");
+        let blue = document.getElementById("blue");
+        let alpha = document.getElementById("alpha");
+        // result spans
+        let redNumber = document.getElementById("redNumber");
+        let greenNumber = document.getElementById("greenNumber");
+        let blueNumber = document.getElementById("blueNumber");
+        let alphaNumber = document.getElementById("alphaNumber");
+        // range sliders
+        let redRange = document.getElementById("redRange");
+        let greenRange = document.getElementById("greenRange");
+        let blueRange = document.getElementById("blueRange");
+        let alphaRange = document.getElementById("alphaRange");
+
+      //functions
+      function evaluate_color(c){
+        if (parseInt(c) == 255) {
+          return 0;
+        } else {
+          return parseInt(c) + 1;
+        }
+      }// end evaluate_color
+
+      function evaluate_alpha(a){
+        if (parseFloat(a) == 1) {
+          return 0.05;
+        } else {
+          return (parseFloat(a) + 0.05).toFixed(2);
+        }
+      }// end evaluate_alpha
+
+      function change_color(r, g, b, a){
+        color = r + ", " + g + ", " + b + ", " + a;
+        colorArray = [r, g, b, a];
+        resultDiv.style.backgroundColor = "rgba(" + color + ")";
+        resultColor.textContent = "rgba(" + color + ")";
+
+        change_div_bgs(colorArray);
+        change_div_text(colorArray);
+        change_slider_values(colorArray);
+      }//end change_color
+
+      function change_div_bgs(colorArray){
+        red.style.backgroundColor = "rgba(" + colorArray[0] + ", 0, 0, 1)";
+        green.style.backgroundColor = "rgba(0, " + colorArray[1] + ", 0, 1)";
+        blue.style.backgroundColor = "rgba(0, 0, " + colorArray[2] + ", 1)";
+        alpha.style.backgroundColor = "rgba(0, 0, 0, " + colorArray[3] + ")";
+      }
+
+      function change_div_text(colorArray){
+        redNumber.innerHTML = colorArray[0];
+        greenNumber.innerHTML = colorArray[1];
+        blueNumber.innerHTML = colorArray[2];
+        alphaNumber.innerHTML = colorArray[3];
+      }
+
+      function change_slider_values(colorArray){
+        redRange.value = colorArray[0];
+        greenRange.value = colorArray[1];
+        blueRange.value = colorArray[2];
+        alphaRange.value = colorArray[3];
+      }
+
+      //Event listeners
+      //incredibly not-DRY, needs refactoring
+      red.addEventListener("click", function(){
+        r = evaluate_color(red.textContent);
+        g = green.textContent;
+        b = blue.textContent;
+        a = alpha.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      green.addEventListener("click", function(){
+        g = evaluate_color(green.textContent);
+        r = red.textContent;
+        b = blue.textContent;
+        a = alpha.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      blue.addEventListener("click", function(){
+        b = evaluate_color(blue.textContent);
+        g = green.textContent;
+        r = red.textContent;
+        a = alpha.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      alpha.addEventListener("click", function(){
+        a = evaluate_alpha(alpha.textContent);
+        g = green.textContent;
+        b = blue.textContent;
+        r = red.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      redRange.addEventListener("change", function(){
+        r = evaluate_color(redRange.value);
+        g = green.textContent;
+        b = blue.textContent;
+        a = alpha.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      greenRange.addEventListener("change", function(){
+        g = evaluate_color(greenRange.value);
+        r = red.textContent;
+        b = blue.textContent;
+        a = alpha.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      blueRange.addEventListener("change", function(){
+        b = evaluate_color(blueRange.value);
+        g = green.textContent;
+        r = red.textContent;
+        a = alpha.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+      alphaRange.addEventListener("change", function(){
+        a = evaluate_alpha(alphaRange.value);
+        g = green.textContent;
+        b = blue.textContent;
+        r = red.textContent;
+        change_color(parseInt(r), parseInt(g), parseInt(b), parseFloat(a));
+      });
+
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
