@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Changer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%; /*from https://stackoverflow.com/a/6654996*/
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+    }
+    html, body {
+      box-sizing: border-box;
+      margin: 0.5em;
+      overflow: hidden;
+      padding: 0.5em;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    h1{
+      font-size: 2em;
+      margin: 2px;
+    }
+    #text-in{
+      display: block;
+      font-size: 1.5em;
+      margin: 2em auto;
+      max-width: 90%;
+      min-height: 33vh;
+      resize: none;
+      text-align: center;
+        -webkit-user-select: auto;
+        -moz-user-select: auto;
+        -ms-user-select: auto;
+        user-select: auto;
+    }
+    #choices{
+      min-height: 50vh;
+      min-width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Change Text</h1>
+  <h5><a href="https://convertcase.net">See the original.</a></h5>
+  <h6>Word count: <span id="wordCount">&nbsp;</span></h6>
+  <h6>Character count: <span id="charCount">&nbsp;</span></h6>
+  <textarea id="text-in" rows="10" cols="80" autofocus="true" placeholder="Your text here."></textarea>
+
+    <div id="choices">
+      <button id="uppercase">UPPERCASE</button>
+      <button id="lowercase">lowercase</button>
+      <button id="sentence">Sentence case</button>
+      <button id="cap">Cap Every Word</button>
+      <button id="extras">Remove extra spaces</button>
+      <button id="weird">WeIrD cAsE</button>
+      <button id="weird-alt">wEiRd CaSe AlT</button>
+    </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let bodyTag = document.getElementsByTagName("body")[0];
+      let textIn = document.getElementById("text-in");
+      let uppercase = document.getElementById("uppercase");
+      let lowercase = document.getElementById("lowercase");
+      let sentence = document.getElementById("sentence");
+      let cap = document.getElementById("cap");
+      let extras = document.getElementById("extras");
+      let weird = document.getElementById("weird");
+      let weirdAlt = document.getElementById("weird-alt");
+      let wordCount = document.getElementById("wordCount");
+      let charCount = document.getElementById("charCount");
+      let punct = "\"'([‘“!?";
+      let punctquotes =  "\"'‘“.";
+
+      //functions
+      function uppercase_text(text){        
+        textIn.value = text.toUpperCase();
+      }//end uppercase_text
+
+      function lowercase_text(text){        
+        textIn.value = text.toLowerCase();
+      }//end lowercase_text
+
+      function weirdcase_text(text){
+        newString = "";
+        for (let i = 0; i < text.length; i++) {
+          if (i % 2 == 0) {
+            newString += text[i].toUpperCase();
+          } else {
+            newString += text[i].toLowerCase();
+          }
+        }
+        textIn.value = newString;
+      }//end weirdcase_text
+
+      function weirdcasealt_text(text){
+        newString = "";
+        for (let i = 0; i < text.length; i++) {
+          if (i % 2 == 1) {
+            newString += text[i].toUpperCase();
+          } else {
+            newString += text[i].toLowerCase();
+          }
+        }
+        textIn.value = newString;
+      }//end weirdcasealt_text
+
+      function wordcaps_text(text){
+        newString = text[0].toUpperCase();
+        for (let i = 0; i < text.length-1; i++){
+          if (text[i] == " " || (punct.indexOf(text[i]) > -1)) {
+            newString += text[i+1].toUpperCase();
+          } else {
+            newString += text[i+1].toLowerCase();
+          }
+        }
+        textIn.value = newString;
+      }//end wordcaps_text
+
+      function sentencecase_text(text){
+        text = removeextras_text(text);
+        newString = text[0].toUpperCase();
+        // deal with start of string
+        for (let i = 0; i < text.length-1; i++){
+          // space then punct
+          if (text[i] == " " && (punct.indexOf(text[i+1]) > -1)){
+            newString += text[i+1].toUpperCase();
+          //two punct
+          } else if ((punct.indexOf(text[i]) > -1) && (punct.indexOf(text[i+1]) > -1)){
+            newString += text[i+1];
+            newString += text[i+2].toUpperCase();
+            i++;
+          //punct, space, quote
+          } else if (
+            ((punct.indexOf(text[i]) > -1) && (text[i+1] == " ") && (punctquotes.indexOf(text[i+2]) > -1)) ||
+            ((punctquotes.indexOf(text[i]) > -1) && (text[i+1] == " ") && (punctquotes.indexOf(text[i+2]) > -1))
+            ){
+            newString += text[i+1];
+            newString += text[i+2];
+            newString += text[i+3].toUpperCase();
+            i += 2;
+          } else {
+            newString += text[i+1].toLowerCase();
+          }
+        }
+        textIn.value = newString;
+      }//end wordcaps_text
+
+      function removeextras_text(text){
+        newString = "";
+        for (let i = 0; i < text.length; i++){
+          if (text[i] == " " && text[i+1] == " "){
+          } else {
+            newString += text[i];
+          }// end if/el
+        }//end for
+        // remove last char if space
+        if (newString[newString.length-1] == "\ "){
+          newString = newString.slice(0, -2);
+        }
+        textIn.value = newString;
+        return newString;
+      }//end removeextras_text
+
+      function wordCount_text(text){
+        text = removeextras_text(text);
+        // https://stackoverflow.com/a/45603705
+        num = text.match(new RegExp(" ",'g')).length;
+        wordCount.innerHTML = num + 1;
+        charCount.innerHTML = text.length;
+      }// end wordCount_text
+
+      //Event listeners
+      uppercase.addEventListener("click", function(){
+        uppercase_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      lowercase.addEventListener("click", function(){
+        lowercase_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      sentence.addEventListener("click", function(){
+        sentencecase_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      weird.addEventListener("click", function(){
+        weirdcase_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      weirdAlt.addEventListener("click", function(){
+        weirdcasealt_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      cap.addEventListener("click", function(){
+        wordcaps_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      extras.addEventListener("click", function(){
+        removeextras_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+      sentence.addEventListener("click", function(){
+        sentencecase_text(textIn.value);
+        wordCount_text(textIn.value);
+      });
+    });//end document.addEventListener("DOMContentLoaded", function() {
+
+  </script>
+</body>
+</html>
