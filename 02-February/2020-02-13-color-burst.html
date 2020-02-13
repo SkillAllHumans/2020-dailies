@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color Burst</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+    }
+    html, body, #start {
+      box-sizing: border-box;
+      margin: 0em;
+      overflow: hidden;
+      padding: 0em;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    #start {
+      background-color: gray;
+      position: absolute;
+      min-height: 100%;
+      min-width: 100%;
+      height: 100%;
+      width: 100%;
+      font-size: 2em;
+    }
+    .bubble{
+      background-color: white;
+      border: 1px solid #aaa;
+      border-radius: 399px;
+      box-sizing: border-box;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="start">Click to Start</div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let bodyTag = document.getElementsByTagName("body")[0];
+      let startDiv = document.getElementById("start");
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let spans = document.getElementsByTagName("span");
+      let colors = ["white", "red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+
+      //functions
+      function removeElement(elem){
+        //https://stackoverflow.com/a/3391282
+        return elem.parentNode.removeChild(elem);
+      }
+
+      function make_circle_spans(){
+        for (let i = 0; i < 170; i++) {
+          let span = document.createElement("span");
+          span.id = "c" + i;
+          span.className = "bubble";
+          span.style.backgroundColor = "white";
+          span.style.width = width/17 + "px";
+          span.style.height = height/10 + "px";
+          bodyTag.appendChild(span);
+        }
+        make_script_for_eventListeners();
+      }//end make_circle_spans
+
+      function change_circle(span){
+        let num = colors.indexOf(span.style.backgroundColor);
+        let newColor;
+        if (num == 7){
+          newColor = colors[0];
+        } else{
+          newColor = colors[num+1];
+        }
+        span.style.backgroundColor = newColor;
+      }
+
+      function make_script_for_eventListeners(){
+        let spans = document.getElementsByTagName("span");
+        for (let i = 0; i < spans.length; i++) {
+          span = spans[i];
+          span.addEventListener("mouseenter", function(){
+            change_circle(this);
+          });
+          span.addEventListener("click", function(){
+            change_circle(this);
+          });
+        }
+      }
+
+      //Event listeners
+      start.addEventListener("click", function(){
+        removeElement(this);
+        make_circle_spans();
+      });
+      window.onresize = function(event) {
+        location.reload();
+      };
+    });//end document.addEventListener
+
+  </script>
+</body>
+</html>
