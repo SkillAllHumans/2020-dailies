@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parts of Speech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      min-height: 100%;
+      min-width: 100%;
+    }
+    html, body{
+      box-sizing: border-box;
+      margin: 0.5em;
+      padding: 0.5em;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .hidden{
+      display: none !important;
+    }
+    #tags{
+      margin: 2.5% auto;
+      max-width: 80%;
+      text-align: center;
+    }
+    .sentence-group{      
+      border: 5px solid gray;
+      margin: 1%;
+      max-width: 80%;
+      min-height: 24vh;
+      padding: 1%;
+    }
+    .wrong{
+      border: 5px dotted red;
+      color: red;
+    }
+    .correct{
+      border: 5px solid green;
+      color: green;
+    }
+    .eval{
+      font-size: 2em;
+      text-align: center;
+    }
+    #results{
+      font-family: sans-serif;
+      text-align: center;
+    }
+    .active{
+      color: #bbb;
+    }
+    button {
+      /*style mod from https://www.w3schools.com/csS/css3_buttons.asp*/
+      background-color: #008CBA;
+      border: none;
+      color: white;
+      padding: 5px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  
+  <h3>Information from <a href="https://www.aims.edu/student/online-writing-lab/grammar/parts-of-speech.php">this site</a>.</h3>
+  
+  <div id="tags">
+    <p>There are 8 parts of speech.</p>
+    <button class="tag" id="adjective">adjective</button>
+    <button class="tag" id="adverb">adverb</button>
+    <button class="tag" id="conjunction">conjunction</button>
+    <button class="tag" id="interjection">interjection</button>
+    <button class="tag" id="noun">noun</button>
+    <button class="tag" id="preposition">preposition</button>
+    <button class="tag" id="pronoun">pronoun</button>
+    <button class="tag" id="verb">verb</button>
+      <p class="hidden definition" id="adjective-definition">modifies (limits or describes) a noun or a pronoun</p>
+      <p class="hidden definition" id="adverb-definition">modifies a verb, an adjective, or another adverb</p>
+      <p class="hidden definition" id="conjunction-definition">used to link words or parts of sentences together</p>
+      <p class="hidden definition" id="interjection-definition">a word added to a sentence to convey emotion; not grammatically related to any other part of the sentence</p>
+      <p class="hidden definition" id="noun-definition">a person, place, thing, or idea</p>
+      <p class="hidden definition" id="preposition-definition">shows the relationship between a noun or pronoun and some other word in the sentence. This relationship is spatial, temporal, or directional</p>
+      <p class="hidden definition" id="pronoun-definition">used to replace/represent a noun</p>
+      <p class="hidden definition" id="verb-definition">describes action or a state of being</p>
+      <p class="definition">&nbsp;</p>
+  </div>
+
+  <p id="results">&nbsp;</p>
+
+  <div class="sentence-group">
+    <p class="sentence">Jane has just finished her doctorate in computer science.</p>
+    <p class="question">What is <em>doctorate</em> in this sentence?</p>
+    <select class="answers" id="p01">
+      <option disabled selected value> -- select an option -- </option><!-- https://stackoverflow.com/a/23638053 -->
+      <option value="adjective">adjective</option>
+      <option value="adverb">adverb</option>
+      <option value="conjunction">conjunction</option>
+      <option value="interjection">interjection</option>
+      <option value="noun">noun</option>
+      <option value="preposition">preposition</option>
+      <option value="pronoun">pronoun</option>
+      <option value="verb">verb</option>
+    </select>
+  </div>
+
+  <div class="sentence-group">
+    <p class="sentence">On Wednesdays, we wear pink.</p>
+    <p class="question">What is <em>wear</em> in this sentence?</p>
+    <select class="answers" id="p02">
+      <option disabled selected value> -- select an option -- </option>
+      <option value="adjective">adjective</option>
+      <option value="adverb">adverb</option>
+      <option value="conjunction">conjunction</option>
+      <option value="interjection">interjection</option>
+      <option value="noun">noun</option>
+      <option value="preposition">preposition</option>
+      <option value="pronoun">pronoun</option>
+      <option value="verb">verb</option>
+    </select>
+  </div>
+
+  <div class="sentence-group">
+    <p class="sentence">Sam works carefully.</p>
+    <p class="question">What is <em>carefully</em> in this sentence?</p>
+    <select class="answers" id="p03">
+      <option disabled selected value> -- select an option -- </option>
+      <option value="adjective">adjective</option>
+      <option value="adverb">adverb</option>
+      <option value="conjunction">conjunction</option>
+      <option value="interjection">interjection</option>
+      <option value="noun">noun</option>
+      <option value="preposition">preposition</option>
+      <option value="pronoun">pronoun</option>
+      <option value="verb">verb</option>
+    </select>
+  </div>
+
+  <div class="sentence-group">
+    <p class="sentence">Where can I find ripe avocados?</p>
+    <p class="question">What is <em>ripe</em> in this sentence?</p>
+    <select class="answers" id="p04">
+      <option disabled selected value> -- select an option -- </option>
+      <option value="adjective">adjective</option>
+      <option value="adverb">adverb</option>
+      <option value="conjunction">conjunction</option>
+      <option value="interjection">interjection</option>
+      <option value="noun">noun</option>
+      <option value="preposition">preposition</option>
+      <option value="pronoun">pronoun</option>
+      <option value="verb">verb</option>
+    </select>
+  </div>
+
+  <script>
+    //act on page load
+    document.addEventListener("DOMContentLoaded", function(){
+      //set vars
+      let bodyTag = document.getElementsByTagName("body")[0];
+      let resultArea = document.getElementById("results");
+      // object literal with properties
+      let correct_answers = {
+        p01: "noun",
+        p02: "verb",
+        p03: "adverb",
+        p04: "adjective"
+      };
+
+      //functions
+      //from https://stackoverflow.com/a/18120786
+        Element.prototype.remove = function() {
+          this.parentElement.removeChild(this);
+        }
+        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+            for(var i = this.length - 1; i >= 0; i--) {
+                if(this[i] && this[i].parentElement) {
+                    this[i].parentElement.removeChild(this[i]);
+                }
+            }
+        }
+
+        //code for buttons/ps (add event listeners)
+        function make_eventListeners_for_buttons(){
+          let buttonstemp = document.getElementsByTagName("button");
+          let buttons = Array.from(buttonstemp);
+
+          buttons.forEach(function(el) {
+            let button = document.getElementById(el.id);
+            let definition = document.getElementById(el.id + "-definition");
+            button.addEventListener("click", function(){
+              show_definition(definition, button);
+            });
+          });
+        }
+
+        function show_definition(definition, button){
+          change_elements(document.getElementsByTagName("button"), 0, "active");
+          change_elements(document.getElementsByClassName("definition"), "hidden", 0);
+
+          button.classList.add("active");
+          definition.classList.remove("hidden");
+        }
+
+        function change_elements(type, classToAdd=0, classToRemove=0){
+          let els = Array.from(type);
+
+          els.forEach(function(el) {
+            if (classToAdd != 0){
+            el.classList.add(classToAdd);
+          } else if (classToRemove != 0){            
+            el.classList.remove(classToRemove);
+          }
+          });
+        }
+        //code for sentences
+        function make_eventListeners_for_sentences(){
+          let answerstemp = document.getElementsByClassName("answers");
+          let answers = Array.from(answerstemp);
+
+          answers.forEach(function(elem) {
+            elemtemp = document.getElementById(elem.id);
+            elemtemp.addEventListener("change", function(){
+              eval_answer(elem);
+            });
+          });
+        }//end make_eventListeners_for_sentences
+
+        function eval_answer(elem){
+          a = correct_answers[elem.id];
+          b = elem.value;
+          if (a == b){
+            elem.parentElement.classList.remove("wrong");
+            elem.parentElement.classList.add("correct");
+          } else {
+            elem.parentElement.classList.add("wrong");
+            elem.parentElement.classList.remove("correct");
+          }
+          text = document.getElementById(a+"-definition").textContent;
+          elem.parentElement.innerHTML += "<div class='eval'>It's a <em>"+a+"</em>: "+text+" (your choice: <em>"+ b +"</em>)</div>";
+          document.getElementById(elem.id).remove();
+          eval_results();
+        }// end eval_answer
+
+
+        //code for results
+        function eval_results(){
+          let correct = document.getElementsByClassName("correct");
+          let wrong = document.getElementsByClassName("wrong");
+          resultArea.innerHTML = "Correct: " + correct.length + ", Incorrect: " + wrong.length;
+          if (correct.length + wrong.length > 3){
+            resultArea.innerHTML += "<br/><button onclick='location.reload();'>Your score is "
+            + ((correct.length/4)*100) + ". Try again?</button>";
+            window.scrollTo(0, 0);
+          }
+        }
+
+      //Event listeners
+
+      //on load
+      make_eventListeners_for_buttons();
+      make_eventListeners_for_sentences();
+    });//end document.addEventListener
+
+  </script>
+</body>
+</html>
