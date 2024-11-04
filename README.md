@@ -1,4 +1,4 @@
-# 2020-dailies
+# [2020-dailies](https://skillallhumans.github.io/2020-dailies/)
 
 #### January
    1. Magnetic Poetry
